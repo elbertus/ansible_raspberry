@@ -1,0 +1,25 @@
+---
+ 
+ - hosts: all
+   become: true
+   pre_tasks:
+ 
+   - name: install updates (Ubuntu)
+     tags: always
+     apt:
+       upgrade: dist
+       update_cache: yes
+     when: ansible_distribution == "Debian"
+
+ - hosts: web_servers
+   become: true
+   tasks:
+
+   - name: copy default html file to site
+     tags: apache,apache2,debian
+     copy:
+       src: folder_top
+       dest: /home/pi/test_copy/
+       owner: pi
+       group: pi
+       mode: 0644
